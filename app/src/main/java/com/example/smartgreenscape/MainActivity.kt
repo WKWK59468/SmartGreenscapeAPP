@@ -1,17 +1,22 @@
 package com.example.smartgreenscape
 
+import android.R
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.smartgreenscape.adapter.DeviceListAdapter
 import com.example.smartgreenscape.databinding.ActivityMainBinding
+import com.example.smartgreenscape.model.DeviceList
 
 
 class MainActivity : AppCompatActivity() {
-    val menu = arrayOf("第一章 光學發展歷史","第二章 光的反射","第三章 波動光學","第四章 光的產生")
+    val menu = listOf(
+        DeviceList("device 1", "仙人掌1"),
+        DeviceList("device 2", "仙人掌2"),
+        DeviceList("device 3", "仙人掌3"),
+        DeviceList("device 4", "仙人掌4")
+    )
     private lateinit var binding: ActivityMainBinding
     private lateinit var deviceListView: ListView
     private lateinit var emptyTextView: TextView
@@ -22,20 +27,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         deviceListView = binding.deviceList
-        emptyTextView = binding.emptyElement  // Replace with the actual ID of your TextView
+        emptyTextView = binding.emptyElement
 
-        // Set the empty view for the ListView
-//        deviceListView.emptyView = emptyTextView
+        deviceListView.emptyView = emptyTextView
 
-        val adapter= ArrayAdapter(this, android.R.layout.simple_list_item_1, menu)
+        val adapter = DeviceListAdapter( this , com.example.smartgreenscape.R.layout.device_list_textview, menu)
         deviceListView.adapter = adapter
-
-        deviceListView.onItemClickListener = object : AdapterView.OnItemClickListener{
-            override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long ) {
-                println("選中的項目： ${menu[position]}")
-            }
-
-        }
 
     }
 }

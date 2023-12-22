@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="10dp"
+    android:paddingHorizontal="10dp"
+    android:background="@color/white"
     tools:context=".MainActivity"
     android:orientation="vertical">
 
@@ -15,6 +16,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="智慧盆栽"
@@ -35,8 +37,10 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/deviceListLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:text="已連線設備"
             android:textColor="@color/black"
             android:textSize="24dp" />
@@ -50,7 +54,8 @@
             <ListView
                 android:id="@+id/deviceList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:tooltipText="" />
 
             <TextView
                 android:id="@+id/emptyElement"
