@@ -10,15 +10,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.smartgreenscape.adapter.DeviceListAdapter
 import com.example.smartgreenscape.databinding.ActivityMainBinding
-import com.example.smartgreenscape.model.DeviceList
+import com.example.smartgreenscape.model.Device
 
 
 class MainActivity : AppCompatActivity() {
     val menu = listOf(
-        DeviceList("device 1", "仙人掌1"),
-        DeviceList("device 2", "仙人掌2"),
-        DeviceList("device 3", "仙人掌3"),
-        DeviceList("device 4", "仙人掌4")
+        Device("device 1", "仙人掌1"),
+        Device("device 2", "仙人掌2"),
+        Device("device 3", "仙人掌3"),
+        Device("device 4", "仙人掌4")
     )
     private lateinit var binding: ActivityMainBinding
     private lateinit var deviceListView: ListView

@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.smartgreenscape.R
-import com.example.smartgreenscape.model.DeviceList
+import com.example.smartgreenscape.model.Device
 
-class DeviceListAdapter(context: Context, resource: Int, objects: List<DeviceList>) :
-    ArrayAdapter<DeviceList>(context, resource, objects) {
+class DeviceListAdapter(context: Context, resource: Int, objects: List<Device>) :
+    ArrayAdapter<Device>(context, resource, objects) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView = inflater.inflate(R.layout.device_list_textview, parent, false)

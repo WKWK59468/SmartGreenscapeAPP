@@ -21,7 +21,6 @@
             android:background="@drawable/left" />
 
         <TextView
-            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -43,7 +42,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/soilhumidityLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -51,13 +49,42 @@
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="3dp"
-                android:padding="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:hint="土壤濕度數值"/>
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/temperature_min"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.47"
+                    android:layout_marginHorizontal="3dp"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="土壤濕度最低值"
+                    android:inputType="numberDecimal"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.06"
+                    android:text="~"
+                    android:gravity="center_horizontal"/>
+
+                <EditText
+                    android:id="@+id/temperature_max"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.47"
+                    android:layout_marginHorizontal="3dp"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="土壤濕度最高值"
+                    android:inputType="numberDecimal"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -68,7 +95,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/humidityLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -76,13 +102,41 @@
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="3dp"
-                android:padding="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:hint="空氣濕度數值"/>
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/humidity_min"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.47"
+                    android:layout_marginHorizontal="3dp"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="空氣濕度最低值"
+                    android:inputType="numberDecimal"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.06"
+                    android:text="~"
+                    android:gravity="center_horizontal"/>
+
+                <EditText
+                    android:id="@+id/humidity_max"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.47"
+                    android:layout_marginHorizontal="3dp"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="空氣濕度最高值"
+                    android:inputType="numberDecimal"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -93,7 +147,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/temperatureLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -101,13 +154,41 @@
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="3dp"
-                android:padding="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:hint="空氣溫度數值"/>
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/soil_humidity_min"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.47"
+                    android:layout_marginHorizontal="3dp"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="空氣溫度最低值"
+                    android:inputType="numberDecimal"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.06"
+                    android:text="~"
+                    android:gravity="center_horizontal"/>
+
+                <EditText
+                    android:id="@+id/soil_humidity_max"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.47"
+                    android:layout_marginHorizontal="3dp"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="空氣溫度最高值"
+                    android:inputType="numberDecimal"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

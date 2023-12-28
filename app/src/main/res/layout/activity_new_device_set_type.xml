@@ -77,16 +77,11 @@
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
-            <com.google.android.flexbox.FlexboxLayout
+
+            <RadioGroup
                 android:id="@+id/buttonContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:flexWrap="wrap"
-                app:alignItems="center"
-                app:alignContent="flex_start"
-                app:flexDirection="row"
-                app:justifyContent="flex_start"
-                app:showDivider="beginning|middle"
                 android:orientation="horizontal"/>
 
         </LinearLayout>
@@ -112,11 +107,11 @@
                 android:id="@+id/nextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
                 android:layout_marginHorizontal="10dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/drak_button"
                 android:text="下一步"
                 android:textColor="@color/white"
-                android:background="@drawable/drak_button"
                 android:textSize="16dp" />
 
         </LinearLayout>

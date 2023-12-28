@@ -1,26 +1,33 @@
 package com.example.smartgreenscape
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.smartgreenscape.databinding.ActivityNewDeviceSetTypeBinding
-import com.google.android.flexbox.FlexboxLayout
+import com.example.smartgreenscape.model.Tag
+import com.nex3z.flowlayout.FlowLayout
 
 class NewDeviceSetTypeActivity : AppCompatActivity()  {
-    private val dataList = listOf("Button 1", "Button 2", "Button 3", "Button 4")
+    private val dataList = listOf(
+        Tag(1,"tag1",20.0,30.0,50.0,70.0,50.0,70.0),
+        Tag(2,"tag2",20.0,30.0,50.0,70.0,50.0,70.0),
+        Tag(3,"tag3",20.0,30.0,50.0,70.0,50.0,70.0),
+        Tag(4,"tag4",20.0,30.0,50.0,70.0,50.0,70.0),
+    )
+    private lateinit var tag: Tag
     private lateinit var binding: ActivityNewDeviceSetTypeBinding
     private lateinit var lastPageButton: ImageButton
     private lateinit var nextButton: Button
     private lateinit var cancelButton: Button
     private lateinit var deviceName: EditText
-    private lateinit var buttonContainer: FlexboxLayout
+    private lateinit var buttonContainer: RadioGroup
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewDeviceSetTypeBinding.inflate(layoutInflater)
@@ -32,9 +39,9 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
         deviceName = binding.deviceName
         buttonContainer = binding.buttonContainer
 
-        for (buttonText in dataList) {
-            val button = Button(this)
-            button.text = buttonText
+        for (data in dataList) {
+            val button = RadioButton(this)
+            button.text = data.name
             button.setBackgroundResource(R.drawable.tag_button)
             button.textSize = resources.getDimension(R.dimen.button_text_size)
 
@@ -43,41 +50,68 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 resources.getDimensionPixelSize(R.dimen.fixed_height)
             )
-            params.setMargins(0, 15, 10, 0)
-
+            params.setMargins(0, 15, 30, 0)
             button.layoutParams = params
+            button.setPaddingRelative(10,5,30,5)
 
             //按鈕事件監聽
             button.setOnClickListener {
-                button.isSelected = !button.isSelected
-                onButtonClick(buttonText)
+                tag = data
             }
 
             buttonContainer.addView(button)
         }
 
         //返回按鈕
-        nextButton.setOnClickListener {
-            val intentNewDeviceSetValutActivity = Intent(this@NewDeviceSetTypeActivity, NewDeviceSetValutActivity::class.java)
-            startActivity(intentNewDeviceSetValutActivity)
+        lastPageButton.setOnClickListener{
+            previousStep()
         }
 
         //取消按鈕
         cancelButton.setOnClickListener {
-            val intentMainActivity = Intent(this@NewDeviceSetTypeActivity, MainActivity::class.java)
-            startActivity(intentMainActivity)
+            previousStep()
         }
 
         //下一步按鈕
-        lastPageButton.setOnClickListener{
-            val intentMainActivity = Intent(this@NewDeviceSetTypeActivity, MainActivity::class.java)
-            startActivity(intentMainActivity)
+        nextButton.setOnClickListener {
+            showAlertDialog(tag, deviceName.text.toString())
         }
     }
+    private fun showAlertDialog(tag: Tag?, deviceName: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("植物生長資訊")
+        builder.setMessage("植物生長資訊是否使用預設建議")
 
-    private fun onButtonClick(buttonText: String) {
-        // 在這裡處理按鈕被點擊時的邏輯
-        // 例如，顯示一個 Toast 訊息
-        Toast.makeText(this@NewDeviceSetTypeActivity, "$buttonText Clicked!", Toast.LENGTH_SHORT).show()
+        // 是的點擊事件
+        builder.setPositiveButton("是") { dialog, which ->
+            //TODO 取得預設數值接口 帶入tag
+            nextStep(tag, deviceName)
+        }
+
+        // 否的點擊事件
+        builder.setNegativeButton("否") { dialog, which ->
+            nextStep(null, deviceName)
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
+    private fun previousStep(){
+        val intentMainActivity = Intent(this@NewDeviceSetTypeActivity, MainActivity::class.java)
+        startActivity(intentMainActivity)
+    }
+    private fun nextStep(tag: Tag?, deviceName: String){
+        val intentNewDeviceSetTypeActivity = Intent(this@NewDeviceSetTypeActivity, NewDeviceSetValutActivity::class.java)
+        intentNewDeviceSetTypeActivity.putExtra("deviceName", deviceName)
+        tag?.let {
+            intentNewDeviceSetTypeActivity.putExtra("temperature_min", it.temperatureMin)
+            intentNewDeviceSetTypeActivity.putExtra("temperature_max", it.temperatureMax)
+            intentNewDeviceSetTypeActivity.putExtra("humidity_min", it.humidityMin)
+            intentNewDeviceSetTypeActivity.putExtra("humidity_max", it.humidityMax)
+            intentNewDeviceSetTypeActivity.putExtra("soil_humidity_min", it.soilHumidityMin)
+            intentNewDeviceSetTypeActivity.putExtra("soil_humidity_max", it.soilHumidityMax)
+        }
+        startActivity(intentNewDeviceSetTypeActivity)
+    }
+
 }
