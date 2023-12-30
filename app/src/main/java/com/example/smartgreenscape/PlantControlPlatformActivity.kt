@@ -26,8 +26,9 @@ class PlantControlPlatformActivity: AppCompatActivity()  {
         lastPageButton = binding.lastPage
 
         lastPageButton.setOnClickListener{
-            val intentMainActivity = Intent(this@PlantControlPlatformActivity, MainActivity::class.java)
-            startActivity(intentMainActivity)
+//            val intentMainActivity = Intent(this@PlantControlPlatformActivity, MainActivity::class.java)
+//            startActivity(intentMainActivity)
+            finish()
         }
         adapter= FragmentPageAdapter(supportFragmentManager,lifecycle)
         tabLayout.addTab(tabLayout.newTab().setText("基本資訊"))
