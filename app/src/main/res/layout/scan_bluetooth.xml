@@ -9,11 +9,12 @@
     <ListView
         android:id="@+id/bt_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_height="622dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+
         android:layout_marginStart="21dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="21dp"
         android:layout_marginBottom="21dp" />
 
@@ -22,6 +23,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
+        android:textSize="20dp"
         android:text="藍芽設備清單" />
+
+    <Button
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="關閉"
+        android:textSize="20dp" />
 </RelativeLayout>

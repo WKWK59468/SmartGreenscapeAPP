@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ListView
@@ -20,25 +21,24 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.getSystemService
+import com.example.smartgreenscape.adapter.BluetoothListAdapter
+import com.example.smartgreenscape.adapter.DeviceListAdapter
+import com.example.smartgreenscape.adapter.OnButtonClickListener
+import com.example.smartgreenscape.model.Bluetooth
 
-class BluetoothActivity : AppCompatActivity() {
+
+class BluetoothActivity : AppCompatActivity(), OnButtonClickListener {
     private var btPermission =false
-    private lateinit var deviceNameTextView:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth)
-        deviceNameTextView=findViewById(R.id.device_name)
-
     }
     fun scanBt(view:View){
         val bluetoothManager:BluetoothManager=getSystemService(BluetoothManager::class.java)
         val bluetoothAdapter:BluetoothAdapter?=bluetoothManager.adapter
         val connectPermission = "android.permission.BLUETOOTH_CONNECT"
         val adminPermission = "android.permission.BLUETOOTH_ADMIN"
-
-        if(bluetoothAdapter==null){
-
-        }
+        if(bluetoothAdapter==null)
         else{
             if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S){
                 blueToothPermissionLauncher.launch(connectPermission)
@@ -71,9 +71,7 @@ class BluetoothActivity : AppCompatActivity() {
         if(result.resultCode== RESULT_OK){
             scanBt()
         }
-
     }
-
     @SuppressLint("MissingPermission")
     private fun scanBt(){
         val bluetoothManager:BluetoothManager=getSystemService(BluetoothManager::class.java)
@@ -84,34 +82,22 @@ class BluetoothActivity : AppCompatActivity() {
         builder.setCancelable(false)
         builder.setView(dialogView)
         val btlst=dialogView.findViewById<ListView>(R.id.bt_list)
+        val closeDialog=dialogView.findViewById<Button>(R.id.close)
+        var bluetoothListData = mutableListOf<Bluetooth>()
         val dialog=builder.create()
+        closeDialog.setOnClickListener{
+            dialog.dismiss()
+        }
         val pairedDevices:Set<BluetoothDevice> = bluetoothAdapter?.bondedDevices as Set<BluetoothDevice>
-        val ADAhere:SimpleAdapter
-        var data:MutableList<Map<String?,Any?>?>?=null
-        data=ArrayList()
         if(pairedDevices.isNotEmpty()){
-            val datanum1:MutableMap<String?,Any?> = HashMap()
-            datanum1["A"]=""
-            datanum1["B"]=""
-            data.add(datanum1)
             for(device in pairedDevices){
-                val datanum:MutableMap<String?,Any?> = HashMap()
-                datanum["A"]=device.name
-                datanum["B"]=device.address
-                data.add(datanum)
+                val newItem = Bluetooth(device.name, device.address)
+                bluetoothListData.add(newItem)
             }
-            val fromwhere= arrayOf("A")
-            val viewswhere= intArrayOf(R.id.item)
-            ADAhere= SimpleAdapter(this@BluetoothActivity,data,R.layout.blutetooth_list,fromwhere,viewswhere)
-            btlst.adapter=ADAhere
-            ADAhere.notifyDataSetChanged()
-            btlst.onItemClickListener=AdapterView.OnItemClickListener{adapterView,view,position,l->
-                val string = ADAhere.getItem(position) as HashMap<String,String>
-                val deviceName=string["A"]
-                val deviceAddress=string["B"]
-                deviceNameTextView.text=deviceName
-                dialog.dismiss()
-            }
+            val adapter = BluetoothListAdapter( this , com.example.smartgreenscape.R.layout.blutetooth_list, bluetoothListData)
+            adapter.onButtonClickListener = this
+            btlst.adapter = adapter
+            adapter.notifyDataSetChanged()
         }
         else{
             val value="No Devices Found"
@@ -119,5 +105,10 @@ class BluetoothActivity : AppCompatActivity() {
             return
         }
         dialog.show()
+    }
+    override fun onButtonClick(adapter: BluetoothListAdapter, position: Int,macAddress:String) {
+        val intentNewDeviceSetTypeActivity = Intent(this@BluetoothActivity, NewDeviceSetTypeActivity::class.java)
+        intentNewDeviceSetTypeActivity.putExtra("macAddress", macAddress)
+        startActivity(intentNewDeviceSetTypeActivity)
     }
 }

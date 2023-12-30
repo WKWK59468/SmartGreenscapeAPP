@@ -2,6 +2,7 @@ package com.example.smartgreenscape
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ImageButton
@@ -40,13 +41,15 @@ class MainActivity : AppCompatActivity() {
         deviceListView.adapter = adapter
         deviceListView.onItemClickListener = object: AdapterView.OnItemClickListener{
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.d("sdfsdfsd","123123123")
+
                 val intentPlantControlPlatformActivity = Intent(this@MainActivity, PlantControlPlatformActivity::class.java)
                 startActivity(intentPlantControlPlatformActivity)
             }
         }
 
         addDeviceButton.setOnClickListener{
-            val intentNewDeviceSetTypeActivity = Intent(this@MainActivity, NewDeviceSetTypeActivity::class.java)
+            val intentNewDeviceSetTypeActivity = Intent(this@MainActivity, BluetoothActivity::class.java)
             startActivity(intentNewDeviceSetTypeActivity)
         }
     }

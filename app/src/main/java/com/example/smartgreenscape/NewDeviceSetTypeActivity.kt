@@ -2,17 +2,18 @@ package com.example.smartgreenscape
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.smartgreenscape.databinding.ActivityNewDeviceSetTypeBinding
 import com.example.smartgreenscape.model.Tag
-import com.nex3z.flowlayout.FlowLayout
 
 class NewDeviceSetTypeActivity : AppCompatActivity()  {
     private val dataList = listOf(
@@ -27,12 +28,20 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
     private lateinit var nextButton: Button
     private lateinit var cancelButton: Button
     private lateinit var deviceName: EditText
+    private lateinit var deviceAddress:TextView
+
     private lateinit var buttonContainer: RadioGroup
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewDeviceSetTypeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        deviceAddress=binding.deviceAddress
+        if (intent.hasExtra("macAddress")) {
+            val macAddress = intent.getStringExtra("macAddress")
+            deviceAddress.text=macAddress.toString()
+            Log.d("intentA",macAddress.toString())
+        }
         lastPageButton = binding.lastPage
         nextButton = binding.nextButton
         cancelButton = binding.cancelButton
