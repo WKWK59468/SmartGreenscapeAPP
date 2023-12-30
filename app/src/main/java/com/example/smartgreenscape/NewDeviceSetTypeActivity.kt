@@ -106,8 +106,9 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
         dialog.show()
     }
     private fun previousStep(){
-        val intentMainActivity = Intent(this@NewDeviceSetTypeActivity, MainActivity::class.java)
-        startActivity(intentMainActivity)
+//        val intentMainActivity = Intent(this@NewDeviceSetTypeActivity, MainActivity::class.java)
+//        startActivity(intentMainActivity)
+        finish()
     }
     private fun nextStep(tag: Tag?, deviceName: String){
         val intentNewDeviceSetTypeActivity = Intent(this@NewDeviceSetTypeActivity, NewDeviceSetValutActivity::class.java)

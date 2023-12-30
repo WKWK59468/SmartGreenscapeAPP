@@ -63,6 +63,8 @@
                     android:padding="8dp"
                     android:background="@drawable/rounded_edittext"
                     android:hint="土壤濕度最低值"
+                    android:textColorHint="@color/dark_gray"
+                    android:textColor="@color/black"
                     android:inputType="numberDecimal"/>
 
                 <TextView
@@ -70,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.06"
                     android:text="~"
+                    android:textColor="@color/black"
                     android:gravity="center_horizontal"/>
 
                 <EditText
@@ -81,6 +84,8 @@
                     android:padding="8dp"
                     android:background="@drawable/rounded_edittext"
                     android:hint="土壤濕度最高值"
+                    android:textColorHint="@color/dark_gray"
+                    android:textColor="@color/black"
                     android:inputType="numberDecimal"/>
 
             </LinearLayout>
@@ -116,6 +121,8 @@
                     android:padding="8dp"
                     android:background="@drawable/rounded_edittext"
                     android:hint="空氣濕度最低值"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_gray"
                     android:inputType="numberDecimal"/>
 
                 <TextView
@@ -123,6 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.06"
                     android:text="~"
+                    android:textColor="@color/black"
                     android:gravity="center_horizontal"/>
 
                 <EditText
@@ -134,6 +142,8 @@
                     android:padding="8dp"
                     android:background="@drawable/rounded_edittext"
                     android:hint="空氣濕度最高值"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_gray"
                     android:inputType="numberDecimal"/>
 
             </LinearLayout>
@@ -168,6 +178,8 @@
                     android:padding="8dp"
                     android:background="@drawable/rounded_edittext"
                     android:hint="空氣溫度最低值"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_gray"
                     android:inputType="numberDecimal"/>
 
                 <TextView
@@ -175,6 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.06"
                     android:text="~"
+                    android:textColor="@color/black"
                     android:gravity="center_horizontal"/>
 
                 <EditText
@@ -186,6 +199,8 @@
                     android:padding="8dp"
                     android:background="@drawable/rounded_edittext"
                     android:hint="空氣溫度最高值"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_gray"
                     android:inputType="numberDecimal"/>
 
             </LinearLayout>

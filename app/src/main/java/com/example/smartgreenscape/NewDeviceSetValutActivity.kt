@@ -53,7 +53,7 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
 
         //上一頁按鈕
         lastPageButton.setOnClickListener{
-            previousStep()
+            finish()
         }
 
         //保存按鈕
@@ -63,7 +63,7 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
 
         //上一步按鈕
         previousButton.setOnClickListener {
-            previousStep()
+            finish()
         }
 
 
@@ -76,17 +76,8 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
         val intentMainActivity = Intent(this@NewDeviceSetValutActivity, MainActivity::class.java)
         startActivity(intentMainActivity)
     }
-    private fun previousStep(){
-        val intentNewDeviceSetTypeActivity = Intent(this@NewDeviceSetValutActivity, NewDeviceSetTypeActivity::class.java)
-        intentNewDeviceSetTypeActivity.putExtra("deviceName", "")
-
-//        intentNewDeviceSetTypeActivity.putExtra("temperature_min", it.temperatureMin)
-//        intentNewDeviceSetTypeActivity.putExtra("temperature_max", it.temperatureMax)
-//        intentNewDeviceSetTypeActivity.putExtra("humidity_min", it.humidityMin)
-//        intentNewDeviceSetTypeActivity.putExtra("humidity_max", it.humidityMax)
-//        intentNewDeviceSetTypeActivity.putExtra("soil_humidity_min", it.soilHumidityMin)
-//        intentNewDeviceSetTypeActivity.putExtra("soil_humidity_max", it.soilHumidityMax)
-
-        startActivity(intentNewDeviceSetTypeActivity)
-    }
+//    private fun previousStep(){
+//        val intentNewDeviceSetTypeActivity = Intent(this@NewDeviceSetValutActivity, NewDeviceSetTypeActivity::class.java)
+//        startActivity(intentNewDeviceSetTypeActivity)
+//    }
 }

@@ -59,7 +59,9 @@
                 android:layout_marginHorizontal="3dp"
                 android:padding="8dp"
                 android:background="@drawable/rounded_edittext"
-                android:hint="Enter device name"/>
+                android:textColor="@color/black"
+                android:hint="Enter device name"
+                android:textColorHint="@color/dark_gray"/>
 
         </LinearLayout>
         <LinearLayout
@@ -76,13 +78,16 @@
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/deviceAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="3dp"
+                android:background="@drawable/rounded_edittext"
                 android:padding="8dp"
-                android:background="@drawable/rounded_edittext"/>
+                android:textColor="@color/black"
+                android:hint="Enter Mac Address"
+                android:textColorHint="@color/dark_gray"/>
 
         </LinearLayout>
         <LinearLayout
