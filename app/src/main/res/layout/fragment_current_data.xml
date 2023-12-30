@@ -15,21 +15,24 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="15dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/water_image"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_vertical">
 
@@ -39,12 +42,27 @@
                         android:text="土壤濕度"
                         android:textColor="@color/black"
                         android:textSize="20dp"/>
-                    <TextView
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="當前土壤濕度為50%"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="16dp"/>
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="當前土壤濕度為"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="16dp"/>
+
+                        <TextView
+                            android:id="@+id/soilHumidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="50%"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="16dp"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -60,21 +78,24 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="15dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/thermometer_iamge"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_vertical">
 
@@ -85,12 +106,27 @@
                         android:textColor="@color/black"
                         android:textSize="20dp"/>
 
-                    <TextView
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="當前溫度為25°C"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="16dp" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="當前溼度為"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="16dp"/>
+
+                        <TextView
+                            android:id="@+id/airTemperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="25°C"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="16dp"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -106,21 +142,24 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="15dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"/>
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/water_image" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_vertical">
 
@@ -130,12 +169,27 @@
                         android:text="空氣濕度"
                         android:textColor="@color/black"
                         android:textSize="20dp"/>
-                    <TextView
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="當前溼度為25°C"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="16dp"/>
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="當前溼度為"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="16dp"/>
+
+                        <TextView
+                            android:id="@+id/airHumidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="25°C"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="16dp"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -151,7 +205,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_marginTop="30dp"
+            android:layout_marginHorizontal="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -165,13 +220,27 @@
                     android:text="氣象局公開資料"
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="最後更新時間：2023/12/18 17:00"
-                    android:textColor="@color/dark_gray"
-                    android:textSize="16dp"/>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="最後更新時間："
+                        android:textColor="@color/dark_gray"
+                        android:textSize="16dp"/>
+
+                    <TextView
+                        android:id="@+id/currentTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2023/12/18 17:00"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="16dp"/>
+
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

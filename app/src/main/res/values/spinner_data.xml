@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="list">
+        <item>數據區間</item>
+        <item>10分鐘內</item>
+        <item>1小時內</item>
+        <item>1天內</item>
+    </string-array>
+</resources>
