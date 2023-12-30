@@ -1,6 +1,7 @@
 package com.example.smartgreenscape
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.smartgreenscape.adapter.DeviceListAdapter
 import com.example.smartgreenscape.databinding.ActivityMainBinding
 import com.example.smartgreenscape.model.Device
+import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var deviceListView: ListView
     private lateinit var emptyTextView: TextView
     private lateinit var addDeviceButton: ImageButton
-
+    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,9 +43,11 @@ class MainActivity : AppCompatActivity() {
         deviceListView.adapter = adapter
         deviceListView.onItemClickListener = object: AdapterView.OnItemClickListener{
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Log.d("sdfsdfsd","123123123")
-
                 val intentPlantControlPlatformActivity = Intent(this@MainActivity, PlantControlPlatformActivity::class.java)
+
+                sharedPreferences = getSharedPreferences("PlantInfo", MODE_PRIVATE)
+                sharedPreferences.edit().putString("plantName", menu[position].plantName).apply()
+
                 startActivity(intentPlantControlPlatformActivity)
             }
         }

@@ -1,8 +1,11 @@
 package com.example.smartgreenscape
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.smartgreenscape.adapter.FragmentPageAdapter
@@ -15,6 +18,8 @@ class PlantControlPlatformActivity: AppCompatActivity()  {
     private lateinit var lastPageButton: ImageButton
     private lateinit var tabLayout:TabLayout
     private lateinit var viewPager2:ViewPager2
+    private lateinit var plantTitle: TextView
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var adapter:FragmentPageAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,10 +29,13 @@ class PlantControlPlatformActivity: AppCompatActivity()  {
         tabLayout=findViewById(R.id.tabLayout)
         viewPager2=findViewById(R.id.viewPager)
         lastPageButton = binding.lastPage
+        plantTitle = binding.plantTitle
+
+        // 植物名稱
+        sharedPreferences = getSharedPreferences("PlantInfo", MODE_PRIVATE)
+        plantTitle.text = sharedPreferences.getString("plantName", "XX 植物")
 
         lastPageButton.setOnClickListener{
-//            val intentMainActivity = Intent(this@PlantControlPlatformActivity, MainActivity::class.java)
-//            startActivity(intentMainActivity)
             finish()
         }
         adapter= FragmentPageAdapter(supportFragmentManager,lifecycle)
