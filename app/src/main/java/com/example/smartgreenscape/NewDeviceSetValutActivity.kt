@@ -2,11 +2,18 @@ package com.example.smartgreenscape
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.smartgreenscape.databinding.ActivityNewDeviceSetValueBinding
+import com.example.smartgreenscape.model.Plant
+import org.json.JSONObject
+import java.nio.charset.Charset
 
 class NewDeviceSetValutActivity: AppCompatActivity()  {
     private lateinit var binding: ActivityNewDeviceSetValueBinding
@@ -19,6 +26,7 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
     private lateinit var humidity_max: EditText
     private lateinit var soil_humidity_min: EditText
     private lateinit var soil_humidity_max: EditText
+    private lateinit var plant: Plant
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewDeviceSetValueBinding.inflate(layoutInflater)
@@ -58,6 +66,14 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
 
         //保存按鈕
         saveButton.setOnClickListener {
+            plant = Plant(
+                temperatureMin = temperature_min.text.toString().toDouble(),
+                temperatureMax = temperature_max.text.toString().toDouble(),
+                humidityMin = humidity_min.text.toString().toDouble(),
+                humidityMax = humidity_max.text.toString().toDouble(),
+                soilHumidityMin = soil_humidity_min.text.toString().toDouble(),
+                soilHumidityMax = soil_humidity_max.text.toString().toDouble()
+            )
             saveDevice()
         }
 
@@ -69,15 +85,39 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
 
     }
     private fun saveDevice(){
+        val queue = Volley.newRequestQueue(this)
+        val url = "http://localhost:8000/api/plant"
+        val requestBody = plant.toString()
 
-        //TODO 保存資料接口
+        val stringRequest = object : StringRequest(
+            Method.POST, url, { response ->
+                Log.d("HKT", "Response: $response")
+                val jsonObject = JSONObject(response.toString())
+//
+//                if(password == jsonObject.getString("password")){
+//                    val pref = getSharedPreferences("Access", AppCompatActivity.MODE_PRIVATE)
+//                    pref.edit().putString("ACCOUNT",account).commit()
+//                    pref.edit().putString("PASSWORD",jsonObject.getString("password")).commit()
+//                    pref.edit().putString("USERNAME",jsonObject.getString("username")).commit()
+//                }else{
+//                    Toast.makeText(context, "帳號或密碼錯誤!", Toast.LENGTH_LONG).show();
+//                }
+                Toast.makeText(this, "新增資料成功!", Toast.LENGTH_LONG).show();
+            },
+            { _ ->
+                Toast.makeText(this, "新增資料失敗!", Toast.LENGTH_LONG).show();
+            }){
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray(Charset.defaultCharset())
+            }
 
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+        }
+        queue.add(stringRequest)
 
         val intentMainActivity = Intent(this@NewDeviceSetValutActivity, MainActivity::class.java)
         startActivity(intentMainActivity)
     }
-//    private fun previousStep(){
-//        val intentNewDeviceSetTypeActivity = Intent(this@NewDeviceSetValutActivity, NewDeviceSetTypeActivity::class.java)
-//        startActivity(intentNewDeviceSetTypeActivity)
-//    }
 }

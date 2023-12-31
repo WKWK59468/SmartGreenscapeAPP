@@ -94,12 +94,12 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
         // 是的點擊事件
         builder.setPositiveButton("是") { dialog, which ->
             //TODO 取得預設數值接口 帶入tag
-            nextStep(tag, deviceName)
+            nextStep(tag, deviceName, deviceAddress.text.toString())
         }
 
         // 否的點擊事件
         builder.setNegativeButton("否") { dialog, which ->
-            nextStep(null, deviceName)
+            nextStep(null, deviceName, null)
         }
 
         val dialog: AlertDialog = builder.create()
@@ -110,9 +110,12 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
 //        startActivity(intentMainActivity)
         finish()
     }
-    private fun nextStep(tag: Tag?, deviceName: String){
+    private fun nextStep(tag: Tag?, deviceName: String, macAddress: String?){
         val intentNewDeviceSetTypeActivity = Intent(this@NewDeviceSetTypeActivity, NewDeviceSetValutActivity::class.java)
         intentNewDeviceSetTypeActivity.putExtra("deviceName", deviceName)
+        macAddress?.let {
+            intentNewDeviceSetTypeActivity.putExtra("macAddress", macAddress)
+        }
         tag?.let {
             intentNewDeviceSetTypeActivity.putExtra("temperature_min", it.temperatureMin)
             intentNewDeviceSetTypeActivity.putExtra("temperature_max", it.temperatureMax)
