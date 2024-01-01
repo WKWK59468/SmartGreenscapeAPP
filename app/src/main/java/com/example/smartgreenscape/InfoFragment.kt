@@ -120,7 +120,7 @@ class InfoFragment : Fragment() {
 
     fun getInfo(macAddress: String?, callback: (Plant) -> Unit){
         val queue = Volley.newRequestQueue(context)
-        val url = "http://10.0.2.2:8000/api/default-class"
+        val url = "http://192.168.0.188:8000/api/plant/${macAddress}"
         Log.d("HKsdfsdfT", url+"dsfsdf"+macAddress)
 
         val stringRequest = StringRequest(
@@ -137,12 +137,12 @@ class InfoFragment : Fragment() {
 //                    startActivity(intentMainActivity)
 //                }
                 val plant = Plant(
-                    temperatureMin = 1.0,
-                    temperatureMax = 1.0,
-                    humidityMin = 1.0,
-                    humidityMax = 1.0,
-                    soilHumidityMin = 1.0,
-                    soilHumidityMax = 1.0
+                    temperatureMin = jsonObject.getDouble("min_temperature"),
+                    temperatureMax = jsonObject.getDouble("max_temperature"),
+                    humidityMin = jsonObject.getDouble("min_humidity"),
+                    humidityMax = jsonObject.getDouble("max_humidity"),
+                    soilHumidityMin = jsonObject.getDouble("min_soil_humidity"),
+                    soilHumidityMax = jsonObject.getDouble("max_soil_humidity")
                 )
                 callback(plant)
             },
@@ -154,7 +154,7 @@ class InfoFragment : Fragment() {
 
     fun updateInfo(plant: Plant){
         val queue = Volley.newRequestQueue(context)
-        val url = "http://localhost:8000/api/plant"
+        val url = "http://192.168.0.188:8000/api/plant"
         val requestBody = "your_request_body_here"
 
         val stringRequest = object : StringRequest(
