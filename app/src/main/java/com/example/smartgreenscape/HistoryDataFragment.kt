@@ -2,19 +2,26 @@ package com.example.smartgreenscape
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.example.smartgreenscape.databinding.FragmentHistoryDataBinding
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
+import org.json.JSONArray
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,19 +36,13 @@ private const val ARG_PARAM2 = "param2"
  */
 class HistoryDataFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var entries = listOf(
-        BarEntry(1f, 11f),
-        BarEntry(2f, 10f),
-        BarEntry(3f, 15f),
-        BarEntry(4f, 13f),
-        BarEntry(5f, 12f),
-    )
-    private var xList = listOf("1/1","1/2","1/3","1/4","1/5")
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var macAddress: String
     private lateinit var spinner: Spinner
     private lateinit var airTemperatureBarChart: BarChart
     private lateinit var soilHumidityBarChart: BarChart
+    private lateinit var binding: FragmentHistoryDataBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -55,26 +56,35 @@ class HistoryDataFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_history_data, container, false)
+        binding = FragmentHistoryDataBinding.inflate(inflater, container, false)
 
         //Spinner
-        spinner = view.findViewById<Spinner>(R.id.dataInterval)
-        ArrayAdapter.createFromResource(
-            this.requireContext(),
-            R.array.list,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
+//        spinner = binding.dataInterval
+//        ArrayAdapter.createFromResource(
+//            this.requireContext(),
+//            R.array.list,
+//            android.R.layout.simple_spinner_item
+//        ).also { adapter ->
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//            spinner.adapter = adapter
+//        }
+
+        //取得macAddress
+        if (activity?.intent?.hasExtra("macAddress") == true) {
+            macAddress = activity?.intent?.getStringExtra("macAddress").toString()
+        } else {
+            macAddress = "A0:B7:65:DE:0C:08"
         }
 
-        //airTemperatureLineChart
-        airTemperatureBarChart(view)
+        get24HData(macAddress){ jsonArray ->
+            //airTemperatureLineChart
+            airTemperatureBarChart(binding, jsonArray)
 
-        //soilHumidityLineChart
-        soilHumidityBarChart(view)
+            //soilHumidityLineChart
+            soilHumidityBarChart(binding, jsonArray)
+        }
 
-        return view
+        return binding.root
     }
 
     companion object {
@@ -97,8 +107,34 @@ class HistoryDataFragment : Fragment() {
             }
     }
 
-    private fun airTemperatureBarChart(view: View){
-        airTemperatureBarChart = view.findViewById(R.id.airTemperatureBarChart)
+    private fun get24HData(macAddress: String?, callback: (JSONArray) -> Unit){
+        val queue = Volley.newRequestQueue(context)
+        val url = "http://192.168.0.188:8000/api/plant/${macAddress}/data/24hr"
+
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                Log.d("HKT", "Response: $response")
+                val jsonArray = JSONArray(response)
+                callback(jsonArray)
+            },
+            { _ ->
+                Toast.makeText(context, "取得資料失敗!", Toast.LENGTH_LONG).show();
+            })
+        queue.add(stringRequest)
+    }
+
+    private fun airTemperatureBarChart(binding: FragmentHistoryDataBinding, jsonArray: JSONArray){
+        airTemperatureBarChart = binding.airTemperatureBarChart
+
+        val entries = mutableListOf<BarEntry>()
+        val xList = mutableListOf<String>()
+
+        for(i in 0 until jsonArray.length()) {
+            val item = jsonArray.getJSONObject(i)
+            entries.add(BarEntry(i.toFloat(), item.getDouble("temperature").toFloat()))
+            xList.add(item.getString("hours"))
+        }
 
         var xAxis = airTemperatureBarChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -106,8 +142,11 @@ class HistoryDataFragment : Fragment() {
         xAxis.textSize = 12f
         xAxis.valueFormatter = IndexAxisValueFormatter(xList)
 
-        val dataSet = BarDataSet(entries, "直條圖")
-        airTemperatureBarChart.data = BarData(dataSet)
+        val dataSet = BarDataSet(entries, "空氣溫度")
+
+        val barData = BarData(dataSet)
+        barData.barWidth = 0.3f // 調整長條寬度
+        airTemperatureBarChart.data = barData
 
         var description = airTemperatureBarChart.description
         description.text = ""
@@ -117,32 +156,38 @@ class HistoryDataFragment : Fragment() {
         airTemperatureBarChart.axisRight.isEnabled = false
     }
 
-    private fun soilHumidityBarChart(view: View){
-        soilHumidityBarChart = view.findViewById(R.id.soilHumidityBarChart)
+    private fun soilHumidityBarChart(binding: FragmentHistoryDataBinding, jsonArray: JSONArray){
+        soilHumidityBarChart = binding.soilHumidityBarChart
 
+        val entries = mutableListOf<BarEntry>()
+        val xList = mutableListOf<String>()
+
+        for(i in 0 until jsonArray.length()) {
+            val item = jsonArray.getJSONObject(i)
+            entries.add(BarEntry(i.toFloat(), item.getDouble("soil_humidity").toFloat()))
+            xList.add(item.getString("hours"))
+        }
+
+        Log.d("xList", xList.toString())
         var xAxis = soilHumidityBarChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.textColor = Color.GRAY
         xAxis.textSize = 12f
         xAxis.valueFormatter = IndexAxisValueFormatter(xList)
 
-        val dataSet = BarDataSet(entries, "直條圖")
-        soilHumidityBarChart.data = BarData(dataSet)
+        val dataSet = BarDataSet(entries, "土壤濕度")
+
+        val barData = BarData(dataSet)
+        barData.barWidth = 0.3f // 調整長條寬度
+        soilHumidityBarChart.data = barData
 
 
         var description = soilHumidityBarChart.description
         description.text = ""
+        description.isEnabled = false
 
         soilHumidityBarChart.setNoDataText("沒有數據")
         soilHumidityBarChart.setNoDataTextColor(R.color.dark_gray)
         soilHumidityBarChart.axisRight.isEnabled = false
-
-        val leftAxis = soilHumidityBarChart.axisLeft
-        leftAxis.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return "" // 這裡可以根據你的需求更改單位
-            }
-        }
-
     }
 }
