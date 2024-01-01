@@ -12,6 +12,9 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.smartgreenscape.databinding.ActivityNewDeviceSetValueBinding
 import com.example.smartgreenscape.model.Plant
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import org.json.JSONObject
 import java.nio.charset.Charset
 
@@ -27,11 +30,15 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
     private lateinit var soil_humidity_min: EditText
     private lateinit var soil_humidity_max: EditText
     private lateinit var plant: Plant
+    private lateinit var macAddress:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewDeviceSetValueBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        if (intent.hasExtra("macAddress")) {
+            macAddress = intent.getStringExtra("macAddress").toString()
+            Log.d("sfef",macAddress)
+        }
         lastPageButton = binding.lastPage
         saveButton = binding.saveButton
         previousButton = binding.previousButton
@@ -67,12 +74,12 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
         //保存按鈕
         saveButton.setOnClickListener {
             plant = Plant(
-                temperatureMin = temperature_min.text.toString().toDouble(),
-                temperatureMax = temperature_max.text.toString().toDouble(),
-                humidityMin = humidity_min.text.toString().toDouble(),
-                humidityMax = humidity_max.text.toString().toDouble(),
-                soilHumidityMin = soil_humidity_min.text.toString().toDouble(),
-                soilHumidityMax = soil_humidity_max.text.toString().toDouble()
+                min_temperature = temperature_min.text.toString().toDouble(),
+                max_temperature = temperature_max.text.toString().toDouble(),
+                min_humidity = humidity_min.text.toString().toDouble(),
+                max_humidity = humidity_max.text.toString().toDouble(),
+                min_soil_humidity = soil_humidity_min.text.toString().toDouble(),
+                max_soil_humidity = soil_humidity_max.text.toString().toDouble()
             )
             saveDevice()
         }
@@ -86,28 +93,27 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
     }
     private fun saveDevice(){
         val queue = Volley.newRequestQueue(this)
-        val url = "http://localhost:8000/api/plant"
-        val requestBody = plant.toString()
+        val url = "http://192.168.213.10:8000/api/plant"
+        val jsonObject = JSONObject()
+        jsonObject.put("min_temperature", plant.min_temperature)
+        jsonObject.put("max_temperature", plant.max_temperature)
+        jsonObject.put("min_humidity", plant.min_humidity)
+        jsonObject.put("max_humidity", plant.max_humidity)
+        jsonObject.put("min_soil_humidity", plant.min_soil_humidity)
+        jsonObject.put("max_soil_humidity", plant.max_soil_humidity)
+        jsonObject.put("mac_address", macAddress)
 
+        val requestBody = jsonObject.toString()
         val stringRequest = object : StringRequest(
             Method.POST, url, { response ->
-                Log.d("HKT", "Response: $response")
                 val jsonObject = JSONObject(response.toString())
-//
-//                if(password == jsonObject.getString("password")){
-//                    val pref = getSharedPreferences("Access", AppCompatActivity.MODE_PRIVATE)
-//                    pref.edit().putString("ACCOUNT",account).commit()
-//                    pref.edit().putString("PASSWORD",jsonObject.getString("password")).commit()
-//                    pref.edit().putString("USERNAME",jsonObject.getString("username")).commit()
-//                }else{
-//                    Toast.makeText(context, "帳號或密碼錯誤!", Toast.LENGTH_LONG).show();
-//                }
                 Toast.makeText(this, "新增資料成功!", Toast.LENGTH_LONG).show();
             },
             { _ ->
                 Toast.makeText(this, "新增資料失敗!", Toast.LENGTH_LONG).show();
             }){
             override fun getBody(): ByteArray {
+
                 return requestBody.toByteArray(Charset.defaultCharset())
             }
 
