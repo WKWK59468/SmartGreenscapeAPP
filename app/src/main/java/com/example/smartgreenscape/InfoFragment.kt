@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.smartgreenscape.databinding.FragmentCurrentDataBinding
 import com.example.smartgreenscape.databinding.FragmentInfoBinding
 import com.example.smartgreenscape.model.Plant
 import org.json.JSONObject
@@ -48,35 +49,8 @@ class InfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentInfoBinding.inflate(layoutInflater)
 
-        temperature_min = binding.temperatureMin
-        temperature_max = binding.temperatureMax
-        humidity_min = binding.humidityMin
-        humidity_max = binding.humidityMax
-        soil_humidity_min = binding.soilHumidityMin
-        soil_humidity_max = binding.soilHumidityMax
 
-        sharedPreferences = activity?.getSharedPreferences("PlantInfo", Context.MODE_PRIVATE)!!
-        val macAddress = sharedPreferences.getString("macAddress","")
-
-        getInfo(macAddress){ plant ->
-            temperature_min.text = Editable.Factory.getInstance().newEditable(plant.temperatureMin.toString())
-            temperature_max.text = Editable.Factory.getInstance().newEditable(plant.temperatureMax.toString())
-            humidity_min.text = Editable.Factory.getInstance().newEditable(plant.humidityMin.toString())
-            humidity_max.text = Editable.Factory.getInstance().newEditable(plant.humidityMax.toString())
-            soil_humidity_min.text = Editable.Factory.getInstance().newEditable(plant.soilHumidityMin.toString())
-            soil_humidity_max.text = Editable.Factory.getInstance().newEditable(plant.soilHumidityMax.toString())
-            plantData = plant
-        }
-
-        saveButton.setOnClickListener {
-            updateInfo(plantData)
-        }
-
-        cancelButton.setOnClickListener {
-            activity?.finish()
-        }
 
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -89,9 +63,41 @@ class InfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_info, container, false)
+        binding= FragmentInfoBinding.inflate(inflater,container,false)
+        temperature_min = binding.temperatureMin
+        temperature_max = binding.temperatureMax
+        humidity_min = binding.humidityMin
+        humidity_max = binding.humidityMax
+        soil_humidity_min = binding.soilHumidityMin
+        soil_humidity_max = binding.soilHumidityMax
+
+
+
+//        saveButton.setOnClickListener {
+//            updateInfo(plantData)
+//        }
+//
+//        cancelButton.setOnClickListener {
+//            activity?.finish()
+//        }
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sharedPreferences = activity?.getSharedPreferences("PlantInfo", Context.MODE_PRIVATE)!!
+        val macAddress = sharedPreferences.getString("macAddress","")
+
+        getInfo("A0:B7:65:DE:0C:08"){ plant ->
+            temperature_min.text = Editable.Factory.getInstance().newEditable(plant.temperatureMin.toString())
+            temperature_max.text = Editable.Factory.getInstance().newEditable(plant.temperatureMax.toString())
+            humidity_min.text = Editable.Factory.getInstance().newEditable(plant.humidityMin.toString())
+            humidity_max.text = Editable.Factory.getInstance().newEditable(plant.humidityMax.toString())
+            soil_humidity_min.text = Editable.Factory.getInstance().newEditable(plant.soilHumidityMin.toString())
+            soil_humidity_max.text = Editable.Factory.getInstance().newEditable(plant.soilHumidityMax.toString())
+            plantData = plant
+        }
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -114,7 +120,9 @@ class InfoFragment : Fragment() {
 
     fun getInfo(macAddress: String?, callback: (Plant) -> Unit){
         val queue = Volley.newRequestQueue(context)
-        val url = "http://localhost:8000/api/plant${macAddress}"
+        val url = "http://10.0.2.2:8000/api/default-class"
+        Log.d("HKsdfsdfT", url+"dsfsdf"+macAddress)
+
         val stringRequest = StringRequest(
             Request.Method.GET, url,
             { response ->
