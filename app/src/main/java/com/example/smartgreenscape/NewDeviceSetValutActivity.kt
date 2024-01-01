@@ -1,6 +1,8 @@
 package com.example.smartgreenscape
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -11,10 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.smartgreenscape.databinding.ActivityNewDeviceSetValueBinding
+import com.example.smartgreenscape.model.Device
 import com.example.smartgreenscape.model.Plant
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
 import java.nio.charset.Charset
 
@@ -31,13 +35,24 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
     private lateinit var soil_humidity_max: EditText
     private lateinit var plant: Plant
     private lateinit var macAddress:String
+    private lateinit var plantName:String
+    private lateinit var deviceName:String
+
+    private lateinit var pref:SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewDeviceSetValueBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        pref= getSharedPreferences("TotalDevice", Context.MODE_PRIVATE)
         if (intent.hasExtra("macAddress")) {
             macAddress = intent.getStringExtra("macAddress").toString()
-            Log.d("sfef",macAddress)
+        }
+        if (intent.hasExtra("plantName")) {
+            plantName = intent.getStringExtra("plantName").toString()
+        }
+        if (intent.hasExtra("deviceName")) {
+            deviceName = intent.getStringExtra("deviceName").toString()
         }
         lastPageButton = binding.lastPage
         saveButton = binding.saveButton
@@ -106,7 +121,9 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
         val requestBody = jsonObject.toString()
         val stringRequest = object : StringRequest(
             Method.POST, url, { response ->
-                val jsonObject = JSONObject(response.toString())
+                val deviceData = listOf(Device(deviceName, plantName,macAddress))
+
+                savePrefData(deviceData)
                 Toast.makeText(this, "新增資料成功!", Toast.LENGTH_LONG).show();
             },
             { _ ->
@@ -126,4 +143,28 @@ class NewDeviceSetValutActivity: AppCompatActivity()  {
         val intentMainActivity = Intent(this@NewDeviceSetValutActivity, MainActivity::class.java)
         startActivity(intentMainActivity)
     }
+    private fun savePrefData(DeviceList: List<Device>) {
+        val previousUserList = getDevicerList().toMutableList()
+        previousUserList.addAll(DeviceList)
+        val gson = Gson()
+        val deviceDataJson = gson.toJson(previousUserList)
+        // 將 JSON 字串存儲到 SharedPreferences 中
+        pref.edit().putString("device", deviceDataJson).commit()
+
+        // 打印結果
+    }
+    private fun getDevicerList(): List<Device> {
+        val gson = Gson()
+        val userListJson = pref.getString("device", null)
+        Log.d("Retrieved User List",userListJson.toString())
+
+        // 從 JSON 字串中讀取 UserData List
+        return if (userListJson != null) {
+            val type = object : TypeToken<List<Device>>() {}.type
+            gson.fromJson(userListJson, type)
+        } else {
+            emptyList()
+        }
+    }
+
 }

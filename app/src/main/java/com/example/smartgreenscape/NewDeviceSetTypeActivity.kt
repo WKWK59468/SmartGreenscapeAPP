@@ -33,7 +33,7 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
     private lateinit var cancelButton: Button
     private lateinit var deviceName: EditText
     private lateinit var deviceAddress:TextView
-
+    private lateinit var plantName:String
     private lateinit var buttonContainer: RadioGroup
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +55,7 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
             for (data in dataList) {
                 val button = RadioButton(this)
                 button.text = data.name
+                plantName=data.name
                 button.setBackgroundResource(R.drawable.tag_button)
                 button.textSize = resources.getDimension(R.dimen.button_text_size)
 
@@ -130,12 +131,12 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
         // 是的點擊事件
         builder.setPositiveButton("是") { dialog, which ->
             //TODO 取得預設數值接口 帶入tag
-            nextStep(tag, deviceName, deviceAddress.text.toString())
+            nextStep(tag, deviceName,plantName, deviceAddress.text.toString())
         }
 
         // 否的點擊事件
         builder.setNegativeButton("否") { dialog, which ->
-            nextStep(null, deviceName, null)
+            nextStep(null, deviceName,plantName, null)
         }
 
         val dialog: AlertDialog = builder.create()
@@ -146,9 +147,11 @@ class NewDeviceSetTypeActivity : AppCompatActivity()  {
 //        startActivity(intentMainActivity)
         finish()
     }
-    private fun nextStep(tag: Tag?, deviceName: String, macAddress: String?){
+    private fun nextStep(tag: Tag?, deviceName: String,plantName: String, macAddress: String?){
         val intentNewDeviceSetTypeActivity = Intent(this@NewDeviceSetTypeActivity, NewDeviceSetValutActivity::class.java)
         intentNewDeviceSetTypeActivity.putExtra("deviceName", deviceName)
+        intentNewDeviceSetTypeActivity.putExtra("plantName", plantName)
+
         macAddress?.let {
             intentNewDeviceSetTypeActivity.putExtra("macAddress", macAddress)
         }
