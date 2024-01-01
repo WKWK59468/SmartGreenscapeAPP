@@ -89,12 +89,12 @@ class InfoFragment : Fragment() {
         val macAddress = sharedPreferences.getString("macAddress","")
 
         getInfo("A0:B7:65:DE:0C:08"){ plant ->
-            temperature_min.text = Editable.Factory.getInstance().newEditable(plant.temperatureMin.toString())
-            temperature_max.text = Editable.Factory.getInstance().newEditable(plant.temperatureMax.toString())
-            humidity_min.text = Editable.Factory.getInstance().newEditable(plant.humidityMin.toString())
-            humidity_max.text = Editable.Factory.getInstance().newEditable(plant.humidityMax.toString())
-            soil_humidity_min.text = Editable.Factory.getInstance().newEditable(plant.soilHumidityMin.toString())
-            soil_humidity_max.text = Editable.Factory.getInstance().newEditable(plant.soilHumidityMax.toString())
+            temperature_min.text = Editable.Factory.getInstance().newEditable(plant.min_temperature.toString())
+            temperature_max.text = Editable.Factory.getInstance().newEditable(plant.max_temperature.toString())
+            humidity_min.text = Editable.Factory.getInstance().newEditable(plant.min_humidity.toString())
+            humidity_max.text = Editable.Factory.getInstance().newEditable(plant.max_humidity.toString())
+            soil_humidity_min.text = Editable.Factory.getInstance().newEditable(plant.min_soil_humidity.toString())
+            soil_humidity_max.text = Editable.Factory.getInstance().newEditable(plant.max_soil_humidity.toString())
             plantData = plant
         }
     }
@@ -128,21 +128,14 @@ class InfoFragment : Fragment() {
             { response ->
                 Log.d("HKT", "Response: $response")
                 val jsonObject = JSONObject(response.toString())
-//
-//                if(password == jsonObject.getString("password")){
-//                    val pref = getSharedPreferences("Access", AppCompatActivity.MODE_PRIVATE)
-//                    pref.edit().putString("ACCOUNT",account).commit()
-//                    pref.edit().putString("PASSWORD",jsonObject.getString("password")).commit()
-//                    pref.edit().putString("USERNAME",jsonObject.getString("username")).commit()
-//                    startActivity(intentMainActivity)
-//                }
+
                 val plant = Plant(
-                    temperatureMin = jsonObject.getDouble("min_temperature"),
-                    temperatureMax = jsonObject.getDouble("max_temperature"),
-                    humidityMin = jsonObject.getDouble("min_humidity"),
-                    humidityMax = jsonObject.getDouble("max_humidity"),
-                    soilHumidityMin = jsonObject.getDouble("min_soil_humidity"),
-                    soilHumidityMax = jsonObject.getDouble("max_soil_humidity")
+                    min_temperature = jsonObject.getDouble("min_temperature"),
+                    max_temperature = jsonObject.getDouble("max_temperature"),
+                    min_humidity = jsonObject.getDouble("min_humidity"),
+                    max_humidity = jsonObject.getDouble("max_humidity"),
+                    min_soil_humidity = jsonObject.getDouble("min_soil_humidity"),
+                    max_soil_humidity = jsonObject.getDouble("max_soil_humidity")
                 )
                 callback(plant)
             },
