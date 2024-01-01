@@ -1,7 +1,5 @@
 package com.example.smartgreenscape
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -46,7 +44,6 @@ class InfoFragment : Fragment() {
     private lateinit var soil_humidity_max: EditText
     private lateinit var saveButton: Button
     private lateinit var cancelButton: Button
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,16 +68,18 @@ class InfoFragment : Fragment() {
         humidity_max = binding.humidityMax
         soil_humidity_min = binding.soilHumidityMin
         soil_humidity_max = binding.soilHumidityMax
+        saveButton = binding.saveButton
+        cancelButton = binding.cancelButton
 
+        saveButton.setOnClickListener {
+            //TODO macAddress要修改
+            updateInfo(macAddress, plantData)
+        }
 
+        cancelButton.setOnClickListener {
+            activity?.finish()
+        }
 
-//        saveButton.setOnClickListener {
-//            updateInfo(plantData)
-//        }
-//
-//        cancelButton.setOnClickListener {
-//            activity?.finish()
-//        }
         return binding.root
     }
 
@@ -149,7 +148,7 @@ class InfoFragment : Fragment() {
         queue.add(stringRequest)
     }
 
-    fun updateInfo(plant: Plant){
+    fun updateInfo(macAddress: String?, plant: Plant){
         val queue = Volley.newRequestQueue(context)
         val url = "http://192.168.0.188:8000/api/plant"
         val requestBody = "your_request_body_here"
