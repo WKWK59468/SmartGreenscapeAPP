@@ -52,9 +52,8 @@ class MainActivity : AppCompatActivity() {
         deviceListView.onItemClickListener = object: AdapterView.OnItemClickListener{
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val intentPlantControlPlatformActivity = Intent(this@MainActivity, PlantControlPlatformActivity::class.java)
-
-//                sharedPreferences = getSharedPreferences("PlantInfo", MODE_PRIVATE)
-//                sharedPreferences.edit().putString("plantName", menu[position].plantName).apply()
+                intentPlantControlPlatformActivity.putExtra("macAddress", deviceList[position].macAddress)
+                intentPlantControlPlatformActivity.putExtra("plantName", deviceList[position].plantName)
 
                 startActivity(intentPlantControlPlatformActivity)
             }
