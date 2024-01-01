@@ -13,7 +13,6 @@ import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.smartgreenscape.databinding.FragmentCurrentDataBinding
 import com.example.smartgreenscape.databinding.FragmentInfoBinding
 import com.example.smartgreenscape.model.Plant
 import org.json.JSONObject
@@ -48,8 +47,6 @@ class InfoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -72,6 +69,13 @@ class InfoFragment : Fragment() {
         cancelButton = binding.cancelButton
 
         saveButton.setOnClickListener {
+            plantData.min_temperature = temperature_min.text.toString().toDouble()
+            plantData.max_temperature = temperature_max.text.toString().toDouble()
+            plantData.min_humidity = humidity_min.text.toString().toDouble()
+            plantData.max_humidity = humidity_max.text.toString().toDouble()
+            plantData.min_soil_humidity = soil_humidity_min.text.toString().toDouble()
+            plantData.max_soil_humidity = soil_humidity_max.text.toString().toDouble()
+
             //TODO macAddress要修改
             updateInfo(macAddress, plantData)
         }
@@ -150,22 +154,19 @@ class InfoFragment : Fragment() {
 
     fun updateInfo(macAddress: String?, plant: Plant){
         val queue = Volley.newRequestQueue(context)
-        val url = "http://192.168.0.188:8000/api/plant"
-        val requestBody = "your_request_body_here"
+        val url = "http://192.168.0.188:8000/api/plant/${macAddress}"
+        val jsonObject = JSONObject()
+        jsonObject.put("min_temperature", plant.min_temperature)
+        jsonObject.put("max_temperature", plant.max_temperature)
+        jsonObject.put("min_humidity", plant.min_humidity)
+        jsonObject.put("max_humidity", plant.max_humidity)
+        jsonObject.put("min_soil_humidity", plant.min_soil_humidity)
+        jsonObject.put("max_soil_humidity", plant.max_soil_humidity)
+        val requestBody = jsonObject.toString()
 
         val stringRequest = object : StringRequest(
             Method.PUT, url, { response ->
                 Log.d("HKT", "Response: $response")
-//                val jsonObject = JSONObject(response.toString())
-//
-//                if(password == jsonObject.getString("password")){
-//                    val pref = getSharedPreferences("Access", AppCompatActivity.MODE_PRIVATE)
-//                    pref.edit().putString("ACCOUNT",account).commit()
-//                    pref.edit().putString("PASSWORD",jsonObject.getString("password")).commit()
-//                    pref.edit().putString("USERNAME",jsonObject.getString("username")).commit()
-//                }else{
-//                    Toast.makeText(context, "帳號或密碼錯誤!", Toast.LENGTH_LONG).show();
-//                }
                 Toast.makeText(context, "更新資料成功!", Toast.LENGTH_LONG).show();
             },
             { _ ->
