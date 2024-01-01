@@ -35,6 +35,7 @@ class InfoFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var macAddress: String
     private lateinit var plantData: Plant
     private lateinit var binding: FragmentInfoBinding
     private lateinit var temperature_min: EditText
@@ -85,10 +86,13 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedPreferences = activity?.getSharedPreferences("PlantInfo", Context.MODE_PRIVATE)!!
-        val macAddress = sharedPreferences.getString("macAddress","")
+        if (activity?.intent?.hasExtra("macAddress") == true) {
+            macAddress = activity?.intent?.getStringExtra("macAddress").toString()
+        } else {
+            macAddress = "A0:B7:65:DE:0C:08"
+        }
 
-        getInfo("A0:B7:65:DE:0C:08"){ plant ->
+        getInfo(macAddress){ plant ->
             temperature_min.text = Editable.Factory.getInstance().newEditable(plant.min_temperature.toString())
             temperature_max.text = Editable.Factory.getInstance().newEditable(plant.max_temperature.toString())
             humidity_min.text = Editable.Factory.getInstance().newEditable(plant.min_humidity.toString())
