@@ -137,10 +137,11 @@ class HistoryDataFragment : Fragment() {
         }
 
         var xAxis = airTemperatureBarChart.xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.textColor = Color.GRAY
-        xAxis.textSize = 12f
-        xAxis.valueFormatter = IndexAxisValueFormatter(xList)
+        xAxis.isEnabled = false
+//        xAxis.position = XAxis.XAxisPosition.BOTTOM
+//        xAxis.textColor = Color.GRAY
+//        xAxis.textSize = 12f
+//        xAxis.valueFormatter = IndexAxisValueFormatter(xList)
 
         val dataSet = BarDataSet(entries, "空氣溫度")
 
@@ -170,10 +171,11 @@ class HistoryDataFragment : Fragment() {
 
         Log.d("xList", xList.toString())
         var xAxis = soilHumidityBarChart.xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.textColor = Color.GRAY
-        xAxis.textSize = 12f
-        xAxis.valueFormatter = IndexAxisValueFormatter(xList)
+        xAxis.isEnabled = false
+//        xAxis.position = XAxis.XAxisPosition.BOTTOM
+//        xAxis.textColor = Color.GRAY
+//        xAxis.textSize = 12f
+//        xAxis.valueFormatter = IndexAxisValueFormatter(xList)
 
         val dataSet = BarDataSet(entries, "土壤濕度")
 
