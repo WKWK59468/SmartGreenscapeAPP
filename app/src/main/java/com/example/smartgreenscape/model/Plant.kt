@@ -1,10 +1,10 @@
 package com.example.smartgreenscape.model
 
 data class Plant(
-    var temperatureMin: Double = 0.0,
-    var temperatureMax: Double = 0.0,
-    var humidityMin: Double = 0.0,
-    var humidityMax: Double = 0.0,
-    var soilHumidityMin: Double = 0.0,
-    var soilHumidityMax: Double = 0.0
+    var min_temperature: Double = 0.0,
+    var max_temperature: Double = 0.0,
+    var min_humidity: Double = 0.0,
+    var max_humidity: Double = 0.0,
+    var min_soil_humidity: Double = 0.0,
+    var max_soil_humidity: Double = 0.0
 )
